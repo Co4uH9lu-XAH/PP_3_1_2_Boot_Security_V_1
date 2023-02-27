@@ -28,7 +28,7 @@ public class UserDAOImp implements UserDAO {
     @Override
     public void updateUser(int id, User user) {
         User updatedUser = entityManager.find(User.class, id);
-        updatedUser.setName(user.getName());
+        updatedUser.setUsername(user.getUsername());
         updatedUser.setSurname(user.getSurname());
         updatedUser.setAge(user.getAge());
     }

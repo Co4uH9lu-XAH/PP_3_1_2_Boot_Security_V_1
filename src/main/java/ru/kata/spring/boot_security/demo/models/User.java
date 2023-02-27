@@ -1,32 +1,36 @@
 package ru.kata.spring.boot_security.demo.models;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 
 
+// Я осознал, что надо заводить класс-обертку над User и передавать туда User или от него же наследоваться,
+// чтобы получить доступ к методам User, но в ТЗ написано User имплементит UserDetails
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username")
+    private String username;
     @Column(name = "surname")
     private String surname;
     @Column(name = "age")
     private int age;
 
+    @Column(name = "password")
+    private String password;
+
     public User() {
     }
 
-    public User(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public User(String name, String surname, int age) {
-        this.name = name;
+    public User(String username, String surname, int age) {
+        this.username = username;
         this.surname = surname;
         this.age = age;
     }
@@ -35,8 +39,9 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     public String getSurname() {
@@ -47,8 +52,8 @@ public class User {
         return age;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setSurname(String surname) {
@@ -60,10 +65,43 @@ public class User {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
                 '}';
