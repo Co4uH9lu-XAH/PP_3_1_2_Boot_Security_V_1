@@ -25,6 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.authProvider = authProvider;
     }
 
+    // Сюда передается результат аутентефикации.
     @Override
     protected void configure (AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(authProvider);
@@ -33,8 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()// TODO включить защиту
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/", "/index").permitAll() // По этим запросам пускаем всех
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)

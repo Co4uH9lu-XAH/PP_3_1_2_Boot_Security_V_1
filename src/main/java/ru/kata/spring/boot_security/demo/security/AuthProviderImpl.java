@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.service.UserSecurityService;
 
 import java.util.Collections;
-
+/*
+В этой имплементации в методе в authentication приходит имя и пароль из формы аутентификации,
+которые проверяются на соответствие имени и пароля в базе юзеров.
+ */
 
 @Component
 public class AuthProviderImpl implements AuthenticationProvider {
