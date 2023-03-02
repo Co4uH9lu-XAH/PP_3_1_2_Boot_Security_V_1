@@ -9,7 +9,7 @@ import java.util.Collection;
 // Я осознал, что надо заводить класс-обертку над User и передавать туда User или от него же наследоваться,
 // чтобы получить доступ к методам User, но в ТЗ написано User имплементит UserDetails
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User implements UserDetails {
 
     @Id
@@ -26,6 +26,13 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST},
+            fetch = FetchType.LAZY)
+    @JoinTable (name = "users_roles", joinColumns = @JoinColumn( name = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "role_id"))
+
+    private Collection<Role> roles;
+
     public User() {
     }
 
@@ -33,6 +40,14 @@ public class User implements UserDetails {
         this.username = username;
         this.surname = surname;
         this.age = age;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public int getId() {
@@ -66,7 +81,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return getRoles();
     }
 
     public String getPassword() {

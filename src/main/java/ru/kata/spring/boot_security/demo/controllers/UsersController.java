@@ -35,18 +35,6 @@ public class UsersController {
         return "users/show-user";
     }
 
-    @GetMapping("/newUser")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "/users/new-user";
-    }
-
-    @PostMapping("/user-create")
-    public String addUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/showUsers";
-    }
-
     @GetMapping("/{id}/edit")
     public String editUser(@PathVariable ("id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
